@@ -1,0 +1,339 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/framework7.ios.min.css">
+    <!-- Path to Framework7 iOS related color styles -->
+    <link rel="stylesheet" href="stylesheets/framework7.ios.colors.min.css">
+
+    <link rel="stylesheet" href="stylesheets/framework71.ios.colors.min.css">
+    <!--<script data-main="/javascripts/requirejs/main" src="/javascripts/require.js"></script>-->
+    <script  src="/javascripts/requirejs/template7.min.js"></script>
+    <!--<script  src="/javascripts/requirejs/template7.min.js"></script>-->
+    <!--<script  src="/javascripts/jquery/jquery.js"></script>-->
+    <script  src="/javascripts/framework7.js"></script>
+</head>
+<body>
+<div class="statusbar-overlay"></div>
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<!-- Left panel with reveal effect-->
+<div class="panel panel-left panel-reveal">
+    <div class="content-block">
+        <p>Left panel content goes here</p>
+    </div>
+</div>
+
+<div class="views">
+    <div class="view view-main">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="back link open-about" >
+                        <i class="icon icon-back-blue"></i>
+                        <span>Left</span>
+                    </a>
+                </div>
+
+                <div class="center sliding">Awesome App</div>
+                <div class="right sliding">
+                    <a href="/users" class="link">
+                        <i class="icon icon-back-blue"></i>
+                        <span>Right</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pages navbar-through toolbar-through">
+            <div data-page="test" class="page">
+                <div class="page-content">
+                    <p><a href="#" class="button hide-toolbar">hide Toolbar</a></p>
+                    <p><a href="#" class="button show-toolbar">show Toolbar</a></p>
+                    <p><a href="#" class="button confirm-ok">Confirm Toolbar</a></p>
+                    <p><a href="#" class="button prompt">prompt Toolbar</a></p>
+                    <p><a href="#" class="button open-preloader theme-orange">preloader Toolbar</a></p>
+                    <p><a href="#" class="button open-indicator">indicator Toolbar</a></p>
+                    <p><a href="#" class="button test-bar">test Toolbar</a></p>
+
+                    <p class="ccc"> title : {{title}}</p><hr/>
+                    <p id="template">Hello, my name is {{firstName}} {{lastName}}</p><hr/>
+
+                    <p>Here are the list of people i know:</p>
+                    <ul class="bbb">
+                        {{#each people}}
+                        <li>{{@index}}&nbsp;{{firstName}} {{js "this.lastName = 0 ? 'ss' : 's'"}} {{#if @index}} 9{{/if}}</li>
+                        {{/each}}
+                    </ul><hr/>
+                    <a href="/users">ggg</a><hr/>
+
+                    <div class="click">点击这里</div>
+
+
+
+                    <!--<div class="bg"></div>-->
+                    <!--<div class="content">这里是正文内容</div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar tabbar">
+            <div class="toolbar-inner">
+                <a href="#tab2" class="tab-link">
+                    <i class="icon demo-icon-2">
+                        <span class="badge bg-red">5</span>
+                    </i>
+                    <span class="tabbar-label"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popover popover-links">
+
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+        <div class="list-block">
+            <ul>
+                <li><a href="#" class="list-button item-link">Link 1</a></li>
+                <li><a href="#" class="list-button item-link">Link 2</a></li>
+                <li><a href="#" class="list-button item-link">Link 3</a></li>
+                <li><a href="#" class="list-button item-link">Link 4</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay"></div>
+
+<img class="show-share-btn" style="display: none" src="/images/i-f7-material.png">
+
+    <!-- script -->
+    <script>
+
+    var myApp = new Framework7({
+        template7Pages: true // enable Template7 rendering for Ajax and Dynamic pages
+//        preprocess : function(content, url, next) {
+//            console.log(url);
+//        }
+    });
+    var $$ = Framework7.$;
+
+    var mainView = myApp.addView('.view-main', {
+        dynamicNavbar : true
+    });
+
+    $$(document).on('pageInit', function(e) {
+        var page = e.detail.page;
+        if(page.name === 'about') {
+            myApp.alert('用');
+        }
+    });
+
+    // ccc
+    var template = $$('.ccc').html();
+    var compiledTemplate = Template7.compile(template);
+    var title = 'ccc';
+    var html = compiledTemplate({title : title});
+    $$('.ccc').html(html);
+
+    var template4 = $$('title').html();
+    var compiledTemplate4 = Template7.compile(template4);
+    var title4 = '第一个Template7例子';
+    var html4 = compiledTemplate4({title : title4});
+    $$('title').html(html4);
+
+
+    //firstName lastName
+    var template2 = $$('#template').html();
+    var compiledTemplate2  = Template7.compile(template2);
+    var content = {
+        firstName : '六',
+        lastName : '六'
+    };
+    var html2 =  compiledTemplate2(content);
+    $$('#template').html(html2);
+
+    //each
+    var template3 = $$('.bbb').html();
+    var compliedTemplate3 = Template7.compile(template3);
+    var people = [
+        {
+            firstName : '鲤鱼',
+            lastName : '鲳鱼'
+        },
+        {
+            firstName : '泰山',
+            lastName : ['aaa', 'bbb']
+        }
+    ];
+    var html3 = compliedTemplate3({people : people});
+    $$('.bbb').html(html3);
+
+    $$('.hide-toolbar').on('click', function() {
+        mainView.hideToolbar();
+        mainView.hideNavbar();
+        $$('.show-share-btn').show();
+        console.log('aaa');
+    });
+
+    $$('.show-toolbar').on('click', function() {
+        mainView.showToolbar();
+        mainView.showNavbar();
+    });
+
+    $$('.confirm-ok').on('click', function() {
+        myApp.confirm('Are you sure ? ', function() {
+            myApp.alert('Yes !');
+        });
+    });
+
+    $$('.prompt').on('click', function() {
+        myApp.prompt('what"s your name ? ', function(value) {
+            myApp.confirm('Are you sure : ' + value + ' is your name ?' , function () {
+                myApp.alert('Your name is : ' + value);
+            });
+        });
+    });
+
+    $$('.show-share-btn').on('click', function() {
+        $$('.show-share-btn').hide();
+    });
+    $$('.open-preloader').on('click', function() {
+        myApp.showPreloader('不要急');
+        setTimeout(function() {
+            myApp.hidePreloader();
+        }, 2000);
+    });
+
+    $$('.open-indicator').on('click', function() {
+        myApp.showIndicator();
+        setTimeout(function() {
+            myApp.hideIndicator();
+        }, 2000);
+    });
+
+    $$('.open-about').on('click', function() {
+        var clickedLink = this;
+        myApp.popover('.popover-links', clickedLink);
+    });
+
+    $$('.test-bar').on('click', function() {
+//        $$('body').hide();
+        myApp.alert('sssss');
+        $$('.test-bar').data('ccc', {
+            name : 'mhp'
+        });
+        console.log('xxx');
+    });
+    var fruits = ['Apple', 'Orange', 'Pineapple', 'Bannana'];
+        $$.each(fruits, function(index, value) {
+            console.log(index, value);
+        });
+
+    var person = {
+        firstName: 'John',
+        lastName: 'Doe',
+        age: 25
+    };
+    $$.each(person, function(key, value) {
+        console.log(key, value);
+    })
+
+    var str = 'http://google.com/?id=5&foo=bar';
+    console.log($$.parseUrlQuery(str));
+    console.log($$.isArray(fruits));
+
+        $$.ajax({
+            url : '/test',
+            dataType : 'json',
+            data : {
+                test : 'ssss'
+            },
+            method : 'POST',
+            timeout : 100,
+            success : function(data) {
+                console.log(data);
+
+
+                $$('body').prepend(newMask);
+
+            },
+            error : function() {
+                console.log('lll');
+            }
+        });
+
+    $$('.click').on('click', function() {
+//        modal-overlay modal-overlay-visible
+        //modal-overlay-visible
+        $$('.modal-overlay').addClass('modal-overlay-visible');
+        var testdiv = '<div class="modal modal-in show-haha" style="display: block">ssss</div>\
+                <div class="modal modal-in show-haha aaaccc" style="display: block;top : 30%;right : 0">ssss</div>';
+
+        $$('body').append(testHtml);
+        setTimeout(function() {
+            $$('.show-haha').remove();
+            $$('.modal-overlay').removeClass('modal-overlay-visible');
+        }, 2000);
+    });
+
+
+    var testHtml ='<div class="modal modal-in show-haha">' +
+            '<div class="navbar">' +
+            '<div class="navbar-inner">' +
+    '<div class="left">' +
+    '<a href="#" class="back link">' +
+    '<i class="icon icon-back-blue"></i>' +
+    '<span>Back</span>' +
+    '</a>' +
+    '</div>' +
+    '<div class="center sliding">About</div>' +
+    '<div class="right">' +
+    '<a href="#" class="link icon-only open-panel"><i class="icon icon-bars-blue"></i></a>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="pages">' +
+    '<div data-page="about" class="page">' +
+    '<div class="page-content">' +
+    '<div class="content-block">' +
+    '<p>Here is About page!</p>' +
+    '<p>Fusce eros lectus, accumsan eget mi vel, iaculis tincidunt felis. Nulla tincidunt pharetra sagittis. Fusce in felis eros. Nulla sit amet aliquam lorem, et gravida ipsum. Mauris consectetur nisl non sollicitudin tristique. Praesent vitae metus ac quam rhoncus mattis vel et nisi. Aenean aliquet, felis quis dignissim iaculis, lectus quam tincidunt ligula, et venenatis turpis risus sed lorem. Morbi eu metus elit. Ut vel diam dolor.</p>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+            '</div>' +
+    '</div>';
+
+</script>
+
+
+
+<style>
+    .show-haha {
+        top : 10%;
+        left : 20%;
+        width : 90%;
+        background: #ccc;
+    }
+    .show-share-btn {
+        position : fixed;
+        top : 0;
+        left : 0;
+        dispay : none !important;
+        width: 100%;
+        height: 100%;
+        z-index : 20000;
+    }
+</style>
+</body>
+</html>
+
+<!--<div class="modal modal-in show-haha" style="display: block">ssss</div>-->
+<!--<div class="modal modal-in show-haha" style="display: block;right : 0">ssss</div>-->
+
+
+
